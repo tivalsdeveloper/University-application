@@ -198,7 +198,7 @@ input, textarea, select { width: 100%; padding: 12px; margin-bottom: 15px; borde
 
 <!-- CHATBOT (tivals) -->
 <div id="chat-icon" onclick="toggleChat()">🗨️</div>
-<div id="chat-window">
+<div id="chat-window" style="display:none">
     <div class="chat-header">
         <span>tivals Bot</span>
         <span onclick="toggleChat()" style="cursor:pointer">×</span>
@@ -413,8 +413,14 @@ function showPage(id) {
 }
 
 function toggleChat() {
+    const host = document.getElementById('tivals-ai-widget');
+    const fab = host && host.shadowRoot && host.shadowRoot.querySelector('.fab');
+    if (fab) {
+        fab.click();
+        return;
+    }
     const win = document.getElementById('chat-window');
-    win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+    if (win) win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
 }
 
 function botReply(type) {
@@ -532,5 +538,21 @@ function submitWA() {
   data-name="Tivalsdeveloper"
   data-position="right"
   data-welcome="Hi! How can I help?"></script>
+<script>
+(function connectExistingChatIconToTivalsAI() {
+  let attempts = 0;
+  const timer = setInterval(() => {
+    attempts++;
+    const host = document.getElementById('tivals-ai-widget');
+    const fab = host && host.shadowRoot && host.shadowRoot.querySelector('.fab');
+    if (fab) {
+      fab.style.display = 'none';
+      clearInterval(timer);
+    } else if (attempts >= 50) {
+      clearInterval(timer);
+    }
+  }, 100);
+})();
+</script>
 </body>
 </html>
