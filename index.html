@@ -415,8 +415,13 @@ function showPage(id) {
 
 function toggleChat() {
     const host = document.getElementById('tivals-ai-widget');
-    const fab = host && host.shadowRoot && host.shadowRoot.querySelector('.fab');
-    if (fab) fab.click();
+    const root = host && host.shadowRoot;
+    const panel = root && root.querySelector('.panel');
+    const input = root && root.querySelector('.input');
+    if (panel) {
+        panel.classList.add('open');
+        if (input) setTimeout(() => input.focus(), 50);
+    }
 }
 
 function botReply(type) {
@@ -542,11 +547,8 @@ function submitWA() {
     const host = document.getElementById('tivals-ai-widget');
     const fab = host && host.shadowRoot && host.shadowRoot.querySelector('.fab');
     if (fab) {
-      fab.style.position = 'fixed';
-      fab.style.opacity = '0';
+      fab.style.visibility = 'hidden';
       fab.style.pointerEvents = 'none';
-      fab.style.width = '1px';
-      fab.style.height = '1px';
       clearInterval(timer);
     } else if (attempts >= 50) {
       clearInterval(timer);
